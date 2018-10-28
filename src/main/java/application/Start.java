@@ -10,7 +10,10 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import db.DBImport;
+
 import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 
@@ -26,11 +29,8 @@ public class Start extends Application {
 
     private final Image windowLogoImage = new Image(getClass().getResourceAsStream("/images/alberguegest_icon.png"));
 
-    @Override
-    public void start(Stage mainStage) {
-
+    static {
         try {
-
             // First run
             if (!new File("db").exists()) {
                 System.out.println("Running for the first time? Installing DB...");
@@ -38,7 +38,15 @@ public class Start extends Application {
                 DBImport imp = new DBImport("/db/schema.sql");
                 imp.fire();
             }
-            // ---
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void start(Stage mainStage) {
+
+        try {
 
             Locale.setDefault(new Locale("es", "PA"));
 
@@ -65,8 +73,7 @@ public class Start extends Application {
 
             mainStage.show();
 
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
 
             Helper.showExceptionMessage(e);
         }
