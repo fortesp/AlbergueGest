@@ -6,6 +6,10 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 abstract public class Controller {
 
     @FXML
@@ -36,5 +40,21 @@ abstract public class Controller {
     }
 
     public void onCloseRequest() {
+    }
+
+
+    public void openWindowsFile(File file) {
+
+        if( Desktop.isDesktopSupported() ) {
+            new Thread(() -> {
+                try {
+                    //Desktop.getDesktop().open( file);
+                    Runtime.getRuntime().exec("explorer.exe " + file.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+
     }
 }

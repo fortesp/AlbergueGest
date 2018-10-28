@@ -106,9 +106,7 @@ public class MainController extends Controller {
             });
 
             miOpenReportDirectory.setOnAction(event -> {
-                try {
-                    Desktop.getDesktop().open(new File(ReportBuilder.REPODIR));
-                } catch (IOException e) {}
+                openWindowsFile(new File(ReportBuilder.REPODIR));
             });
 
 
@@ -444,7 +442,7 @@ public class MainController extends Controller {
                 cbEmployees.getStyleClass().remove("error");
                 File fileReport = reportDao.generateDaily(employee, dpDate.getValue());
 
-                Desktop.getDesktop().open(fileReport);
+                openWindowsFile(fileReport);
             }
 
         } catch (Exception e) {

@@ -2,6 +2,7 @@ package application;
 
 import controller.Controller;
 import javafx.application.Application;
+import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,14 +10,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import db.DBImport;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -39,11 +33,12 @@ public class Start extends Application {
 
             // First run
             if (!new File("db").exists()) {
+                System.out.println("Running for the first time? Installing DB...");
                 // Import
                 DBImport imp = new DBImport("/db/schema.sql");
                 imp.fire();
             }
-            // ---------
+            // ---
 
             Locale.setDefault(new Locale("es", "PA"));
 
@@ -70,10 +65,15 @@ public class Start extends Application {
 
             mainStage.show();
 
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
 
             Helper.showExceptionMessage(e);
         }
+
+
+        notifyPreloader(new Preloader.StateChangeNotification(Preloader.StateChangeNotification.Type.BEFORE_START));
+
     }
 
     private void loadFXMLStage(Stage parentStage, String bundleTitleKey, String fxml, boolean windowResizable) throws Exception {

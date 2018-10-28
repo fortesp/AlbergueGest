@@ -179,7 +179,7 @@ public class ReportController extends Controller {
                 cbEmployees.getStyleClass().remove("error");
                 File fileReport = reportDao.generateAnnually(employee, (int) cbYear.getValue());
 
-                Desktop.getDesktop().open(fileReport);
+                openWindowsFile(fileReport);
             }
         } catch (Exception e) {
             Helper.showExceptionMessage(e);
