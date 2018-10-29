@@ -1,6 +1,7 @@
 package application;
 
 import controller.Controller;
+import db.DBSession;
 import javafx.application.Application;
 import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,9 @@ public class Start extends Application {
 
     private final Image windowLogoImage = new Image(getClass().getResourceAsStream("/images/alberguegest_icon.png"));
 
-    static {
+    @Override
+    public void start(Stage mainStage) {
+
         try {
             // First run
             if (!new File("db").exists()) {
@@ -38,15 +41,7 @@ public class Start extends Application {
                 DBImport imp = new DBImport("/db/schema.sql");
                 imp.fire();
             }
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void start(Stage mainStage) {
-
-        try {
+            // --------
 
             Locale.setDefault(new Locale("es", "PA"));
 
