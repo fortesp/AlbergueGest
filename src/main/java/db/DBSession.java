@@ -11,19 +11,6 @@ public class DBSession {
     private EntityManager entitymanager;
     private static DBSession instance;
 
-    static{
-        try{
-
-            instance = new DBSession();
-
-        }catch(org.hibernate.service.spi.ServiceException e){
-            Helper.showExceptionMessage(new Exception("Error connecting to the database."));
-        }
-        catch(Exception e) {
-            Helper.showExceptionMessage(e);
-        }
-    }
-
     protected DBSession() throws Exception {
 
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("myJPA");
@@ -31,6 +18,19 @@ public class DBSession {
     }
 
     public static DBSession getInstance() {
+
+        if(instance == null) { // Lazy instatiation
+            try{
+
+                instance = new DBSession();
+
+            }catch(org.hibernate.service.spi.ServiceException e){
+                Helper.showExceptionMessage(new Exception("Error connecting to the database."));
+            }
+            catch(Exception e) {
+                Helper.showExceptionMessage(e);
+            }
+        }
 
         return instance;
     }
