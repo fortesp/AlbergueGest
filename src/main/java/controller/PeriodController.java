@@ -4,12 +4,17 @@ import application.Helper;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import model.Period;
+import model.Serving;
 import model.person.Companion;
 import model.person.Patient;
 import dao.PeriodDao;
+import model.person.Person;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class PeriodController extends Controller {
@@ -45,10 +50,27 @@ public class PeriodController extends Controller {
     private Button btDel;
     @FXML
     private Button btSearch;
+    @FXML
+    private GridPane gpCheckInfo;
+    @FXML
+    private RowConstraints gpCheckInfoRow;
+    @FXML
+    private Label lblCheckin;
+    @FXML
+    private Label lblCheckout;
+    @FXML
+    private Button btCheckin;
+    @FXML
+    private Label lblObs;
 
     @FXML
     void initialize() {
 
+
+        btCheckin.setOnAction(event -> {
+
+            SaveAction(true);
+        });
 
         btSearch.setOnKeyPressed(event -> {
 
@@ -79,7 +101,22 @@ public class PeriodController extends Controller {
                         loadFieldValues(lastPeriod);
                         chkCompanion.setDisable(false);
 
+                        // -- Show Recheckin row
+                        closeWindow(btCancel);
+                        gpMain.setPrefHeight(370);
+                        gpCheckInfo.setVisible(true);
+                        gpMain.getScene().getWindow().hide();
+                        getStage(this.getClass()).show();
+                        btSave.setDefaultButton(false);
+                        btCheckin.setDefaultButton(true);
+                        btCheckin.setVisible(true);
+                        // --
+
+                        lblCheckin.setText(Helper.formatDate(lastPeriod.getCheckin()));
+                        lblCheckout.setText(Helper.formatDate(lastPeriod.getCheckout()));
+                        lblObs.setText(Helper.getLimitedText(lastPeriod.getObs(), 50, "..."));
                     }
+
                 } else { // Not found
                     txtIdCard.getStyleClass().add("error");
                     Helper.showErrornMessage(getLabel("message.patientNotfound"));
@@ -98,110 +135,138 @@ public class PeriodController extends Controller {
             closeWindow(btCancel);
         });
 
+
         btSave.setOnAction(event -> {
-
-            //  Field validations ---
-            boolean error = false;
-            Patient foundPatient = null;
-
-            if (txtPatientName.getText().isEmpty()) {
-                txtPatientName.getStyleClass().add("error");
-                error = true;
-            } else txtPatientName.getStyleClass().remove("error");
-
-            if (dpDob.getValue() == null) {
-                dpDob.getStyleClass().add("error");
-                error = true;
-            } else if(Helper.getAge(((LocalDate) dpDob.getValue())) < 11) {
-                Helper.showInformationMessage(getLabel("personStage.minimumDobBirth"));
-                dpDob.getStyleClass().add("error");
-                error = true;
-            } else dpDob.getStyleClass().remove("error");
-
-            if (txtIdCard.getText().isEmpty() || !Pattern.matches(getLabel("regex.idcard").trim(), txtIdCard.getText().trim().toUpperCase())) {
-
-                txtIdCard.getStyleClass().add("error");
-                error = true;
-
-            } else {
-
-                foundPatient = periodDao.findPatientByIdCard(txtIdCard.getText());
-
-                if ((foundPatient != null && editPeriod != null) && foundPatient != editPeriod.getPatient()) {
-                    Helper.showErrornMessage(getLabel("message.idcardExists") + "\r\n(" + foundPatient + ")");
-                    txtIdCard.getStyleClass().add("error");
-                    error = true;
-                } else txtIdCard.getStyleClass().remove("error");
-            }
-
-            if (chkCompanion.isSelected() && txtCompanionName.getText().isEmpty()) {
-                txtCompanionName.getStyleClass().add("error");
-                error = true;
-            } else txtCompanionName.getStyleClass().remove("error");
-
-
-            if (error) return;
-
-            // Limit texts
-            txtPatientName.setText(Helper.getLimitedText(Helper.getFormattedFullName(txtPatientName.getText()), 80, "..."));
-
-            if(!txtCompanionName.isDisable())
-                txtCompanionName.setText(Helper.getLimitedText(Helper.getFormattedFullName(txtCompanionName.getText()), 80, "..."));
-
-            // --------------
-
-            MainController mainController = ((MainController) this.getController(MainController.class));
-
-            try {
-
-                if (foundPatient != null) { //  Update
-
-                    Period period = editPeriod;
-
-                    periodDao.updatePatient(period.getPatient(), txtPatientName.getText(), dpDob.getValue(), txtIdCard.getText());
-
-                    if (chkCompanion.isSelected()) {
-                        if (period.getCompanion() != null) {
-                            if (mode == Mode.UPDATEFIELDS)
-                                periodDao.updateCompanion(period.getCompanion(), txtCompanionName.getText());
-                        } else {
-                            Companion newCompanion = periodDao.addCompanion(txtCompanionName.getText());
-                            period.setCompanion(newCompanion);
-                        }
-                    }
-
-                    if (mode == Mode.CHECKINPATIENT) {
-
-                        periodDao.checkin(editPeriod.getPatient(), txtCompanionName.getText(), false);
-                    }
-
-                    mainController.reloadData();
-
-                } else { // New checkin
-
-                    periodDao.checkin(txtPatientName.getText(), dpDob.getValue(), txtIdCard.getText(), txtCompanionName.getText());
-
-                    mainController.reloadData();
-                    mainController.tblData.scrollTo(mainController.tblData.getItems().size());
-                }
-
-
-            } catch (Exception e) {
-                Helper.showExceptionMessage(e);
-            } finally {
-                closeWindow(btCancel);
-            }
-
+            SaveAction(false);
         });
 
 
     }
+
+
+    void SaveAction(boolean checkin) {
+
+        //  Field validations ---
+        boolean error = false;
+        Patient foundPatient = null;
+
+        if (txtPatientName.getText().isEmpty()) {
+            txtPatientName.getStyleClass().add("error");
+            error = true;
+        } else txtPatientName.getStyleClass().remove("error");
+
+        if (dpDob.getValue() == null) {
+            dpDob.getStyleClass().add("error");
+            error = true;
+        } else if (Helper.getAge(((LocalDate) dpDob.getValue())) < 11) {
+            Helper.showInformationMessage(getLabel("personStage.minimumDobBirth"));
+            dpDob.getStyleClass().add("error");
+            error = true;
+        } else dpDob.getStyleClass().remove("error");
+
+        if (txtIdCard.getText().isEmpty() || !Pattern.matches(getLabel("regex.idcard").trim(), txtIdCard.getText().trim().toUpperCase())) {
+
+            txtIdCard.getStyleClass().add("error");
+            error = true;
+
+        } else {
+
+            foundPatient = periodDao.findPatientByIdCard(txtIdCard.getText());
+
+            if ((foundPatient != null && editPeriod != null) && foundPatient != editPeriod.getPatient()) {
+                Helper.showErrornMessage(getLabel("message.idcardExists") + "\r\n(" + foundPatient + ")");
+                txtIdCard.getStyleClass().add("error");
+                error = true;
+            } else txtIdCard.getStyleClass().remove("error");
+        }
+
+        if (chkCompanion.isSelected() && txtCompanionName.getText().isEmpty()) {
+            txtCompanionName.getStyleClass().add("error");
+            error = true;
+        } else txtCompanionName.getStyleClass().remove("error");
+
+
+        if (error) return;
+
+        // Limit texts
+        txtPatientName.setText(Helper.getLimitedText(Helper.getFormattedFullName(txtPatientName.getText()), 80, "..."));
+
+        if (!txtCompanionName.isDisable())
+            txtCompanionName.setText(Helper.getLimitedText(Helper.getFormattedFullName(txtCompanionName.getText()), 80, "..."));
+
+        // --------------
+
+        MainController mainController = ((MainController) this.getController(MainController.class));
+
+        try {
+
+            if (foundPatient != null) { //  Update
+
+                Period period = editPeriod; // Current or old period
+
+                // Recheckin
+                if (checkin) {
+                    if (Helper.confirmMessage(btCheckin.getText(), getLabel("message.areyousure"))) { // Are you sure you want to recheckin?
+
+                        Period newPeriod = periodDao.checkin(period.getPatient(), null);
+
+                        if (newPeriod != null) {
+
+                            Helper.showInformationMessage(getLabel("message.successCheckin"));
+                            mainController.tblData.scrollTo(mainController.tblData.getItems().size());
+
+                            period = newPeriod;
+
+                        } else {
+                            Helper.showErrornMessage(getLabel("message.checkinDoneAlready"));
+                        }
+                    }
+                }
+                //---
+
+                periodDao.updatePatient(period.getPatient(), txtPatientName.getText(), dpDob.getValue(), txtIdCard.getText());
+
+                if (chkCompanion.isSelected()) {
+                    if (period.getCompanion() != null) {
+                        if (mode == Mode.UPDATEFIELDS)
+                            periodDao.updateCompanion(period.getCompanion(), txtCompanionName.getText());
+                    } else {
+                        Companion newCompanion = periodDao.addCompanion(txtCompanionName.getText());
+                        period.setCompanion(newCompanion);
+                    }
+                }
+
+
+                mainController.reloadData();
+
+            } else { // New checkin
+
+                periodDao.checkin(txtPatientName.getText(), dpDob.getValue(), txtIdCard.getText(), txtCompanionName.getText());
+
+                mainController.reloadData();
+                mainController.tblData.scrollTo(mainController.tblData.getItems().size());
+            }
+
+
+        } catch (Exception e) {
+            Helper.showExceptionMessage(e);
+        } finally {
+            closeWindow(btCancel);
+        }
+
+    }
+
 
     void setMode(Mode mode) {
         this.mode = mode;
     }
 
     void resetFieldValues() {
+
+        gpMain.setPrefHeight(300);
+        gpCheckInfo.setVisible(false);
+        btSave.setDefaultButton(true);
+        btCheckin.setVisible(false);
 
         txtPatientName.setText("");
         txtCompanionName.setText("");
@@ -220,6 +285,7 @@ public class PeriodController extends Controller {
 
 
     void loadFieldValues(Period period) {
+
 
         resetFieldValues();
 

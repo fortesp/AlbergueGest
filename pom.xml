@@ -15,18 +15,19 @@
             <email>pedro.daniel.g@gmail.com</email>
         </developer>
     </developers>
+
     <!--
         <build>
             <plugins>-->
-                <!--<plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.1</version>
-                    <configuration>
-                        <mainClass>application.Start</mainClass>
-                        <bundler>EXE</bundler>
-                    </configuration>
-                </plugin>-->
+    <!--<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.6.1</version>
+        <configuration>
+            <mainClass>application.Start</mainClass>
+            <bundler>EXE</bundler>
+        </configuration>
+    </plugin>-->
     <!--<plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-compiler-plugin</artifactId>
@@ -40,7 +41,7 @@
 
 </build>-->
 
-   <!-- <packaging>pom</packaging>-->
+    <!-- <packaging>pom</packaging>-->
 
     <dependencies>
 
@@ -107,7 +108,6 @@
         </dependency>
 
     </dependencies>
-
 
 
 </project>

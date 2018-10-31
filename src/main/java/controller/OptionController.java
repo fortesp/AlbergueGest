@@ -111,6 +111,7 @@ public class OptionController extends Controller {
         // ---------------------
 
         TableColumn<Meal, String> tc1 = new TableColumn(getLabel("name"));
+        tc1.setSortable(false);
         tc1.setCellFactory(cellData -> {
 
             return new TextFieldTableCell(new StringConverter() {
@@ -147,6 +148,7 @@ public class OptionController extends Controller {
 
 
         TableColumn<Meal, Boolean> tc2 = new TableColumn(getLabel("optionStage.mealsVisible"));
+        tc2.setSortable(false);
         tc2.setCellFactory(cellData -> {
 
             return new CheckBoxTableCell<>() {

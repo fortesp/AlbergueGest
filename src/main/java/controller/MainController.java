@@ -22,9 +22,7 @@ import dao.ReportDao;
 import dao.ServingDao;
 import reporting.ReportBuilder;
 
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
@@ -94,11 +92,17 @@ public class MainController extends Controller {
     private MenuItem miAbout;
     @FXML
     private MenuItem miOpenReportDirectory;
+    @FXML
+    private MenuItem miManual;
 
     @FXML
     void initialize() {
 
         try {
+
+            miManual.setOnAction(event -> {
+                openWindowsFile(new File("AlbergueGest-Manual.pdf"));
+            });
 
             miManageEmployees.setOnAction(event -> {
                 ((OptionController) this.getController(OptionController.class)).reloadData();
@@ -108,7 +112,6 @@ public class MainController extends Controller {
             miOpenReportDirectory.setOnAction(event -> {
                 openWindowsFile(new File(ReportBuilder.REPODIR));
             });
-
 
             txtObs.setTextFormatter(new TextFormatter<String>(change ->
                     change.getControlNewText().length() <= 499 ? change : null));
@@ -304,6 +307,7 @@ public class MainController extends Controller {
             // ---
 
             TableColumn<Map.Entry<Period, Map<Person, List<Serving>>>, String> tc7 = new TableColumn(getLabel("observations"));
+            tc7.setSortable(false);
             tc7.setCellValueFactory(cellData -> new SimpleStringProperty(Helper.getLimitedText(cellData.getValue().getKey().getObs(), 40, "...")));
 
             tc_list_group.add(tc7);
@@ -459,6 +463,7 @@ public class MainController extends Controller {
         for (Meal meal : meals) {
 
             TableColumn<Map.Entry<Period, Map<Person, List<Serving>>>, Boolean> tc = new TableColumn(meal.getName());
+            tc.setSortable(false);
             tc_list_group.get(index).getColumns().addAll(tc);
 
             tc.setCellFactory(cellData -> {
@@ -485,8 +490,10 @@ public class MainController extends Controller {
                                 if (index == 1) { // Companion cell group
                                     if (currentRow.getItem().getKey().getCompanion() == null) {
                                         this.setDisable(true);
+                                       // this.setVisible(false);
                                     } else {
                                         this.setDisable(false);
+                                       // this.setVisible(true);
                                     }
                                 }
                             }

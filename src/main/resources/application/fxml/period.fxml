@@ -11,23 +11,24 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gpMain" prefHeight="280.0" prefWidth="508.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PeriodController">
+<GridPane fx:id="gpMain" minWidth="0" prefHeight="300.0" prefWidth="498.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PeriodController">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="3.0" prefWidth="6.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="486.0" minWidth="10.0" prefWidth="484.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="6.0" prefWidth="6.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="106.0" minHeight="0.0" prefHeight="2.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="370.0" minHeight="10.0" prefHeight="223.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="297.0" minHeight="247.0" prefHeight="247.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="100.0" minHeight="0" prefHeight="70.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="46.0" minHeight="46.0" prefHeight="46.0" vgrow="SOMETIMES" />
         </rowConstraints>
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
          <children>
             <GridPane maxHeight="50.0" minHeight="50.0" prefHeight="50.0" VBox.vgrow="ALWAYS">
               <columnConstraints>
@@ -98,6 +99,7 @@
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin></Button>
+                  <Button fx:id="btCheckin" mnemonicParsing="false" text="%recheckin" visible="false" />
                   <Button fx:id="btSave" defaultButton="true" mnemonicParsing="false" text="%save">
                      <HBox.margin>
                         <Insets left="10.0" />
@@ -105,5 +107,63 @@
                </children></HBox>
          </children>
       </GridPane>
+
+       <GridPane id="checkInfo" fx:id="gpCheckInfo" disable="false" minHeight="70.0" prefHeight="70.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+           <columnConstraints>
+               <ColumnConstraints hgrow="NEVER" maxWidth="228.0" minWidth="10.0" prefWidth="228.0" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="228.0" minWidth="10.0" prefWidth="228.0" />
+           </columnConstraints>
+           <rowConstraints>
+               <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="NEVER" />
+               <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="NEVER" />
+           </rowConstraints>
+           <children>
+               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                   <children>
+                       <Label prefWidth="80.0" text="%entranceIn">
+                           <font>
+                               <Font size="14.0" />
+                           </font>
+                       </Label>
+                       <Label fx:id="lblCheckin" text="10/21/2018">
+                           <font>
+                               <Font size="14.0" />
+                           </font>
+                       </Label>
+                   </children>
+               </HBox>
+               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                   <children>
+                       <Label prefWidth="80.0" text="%exitIn">
+                           <font>
+                               <Font size="14.0" />
+                           </font>
+                       </Label>
+                       <Label fx:id="lblCheckout" text="10/21/2018" textFill="#1d3913">
+                           <font>
+                               <Font size="14.0" />
+                           </font>
+                       </Label>
+                   </children>
+               </HBox>
+            <Label text="%personStage.patientCheckTitle">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label text="%observations" GridPane.columnIndex="1">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label fx:id="lblObs" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" GridPane.valignment="TOP">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font></Label>
+           </children>
+           <padding>
+               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+           </padding>
+       </GridPane>
+
    </children>
       </GridPane>

@@ -4,16 +4,25 @@ import controller.Controller;
 import db.DBSession;
 import javafx.application.Application;
 import javafx.application.Preloader;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import db.DBImport;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -40,8 +49,12 @@ public class Start extends Application {
                 // Import
                 DBImport imp = new DBImport("/db/schema.sql");
                 imp.fire();
+
+                InputStream is = getClass().getResourceAsStream("/AlbergueGest-Manual.pdf");
+                Files.copy(is, Paths.get("AlbergueGest-Manual.pdf"));
             }
             // --------
+
 
             Locale.setDefault(new Locale("es", "PA"));
 
@@ -55,6 +68,16 @@ public class Start extends Application {
             mainStage.centerOnScreen();
             mainStage.getIcons().add(windowLogoImage);
             loaders.put(fxmlLoader.getController().getClass(), fxmlLoader.getController());
+            mainStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent t) {
+                    if(t.getCode()== KeyCode.ESCAPE && Helper.confirmMessage(labels.getString("message.areyousure"), labels.getString("message.areyousure"))) {
+                        Stage s = (Stage) mainStage.getScene().getWindow();
+                        s.close();
+                        System.exit(0);
+                    }
+                }
+            });
             // --
 
             loadFXMLStage(mainStage, "personStageTitle", "period.fxml", false);
@@ -94,11 +117,19 @@ public class Start extends Application {
             ((Controller) fxmlLoader.getController()).onCloseRequest();
         });
 
+        stage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if(t.getCode()== KeyCode.ESCAPE) {
+                    Stage s = (Stage) stage.getScene().getWindow();
+                    s.close();
+                }
+            }
+        });
+
         loaders.put(fxmlLoader.getController().getClass(), fxmlLoader.getController());
     }
 
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) throws UnknownHostException {  launch(args);  }
 }

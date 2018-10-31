@@ -201,6 +201,7 @@ public class ReportController extends Controller {
 
                 cbEmployees.getStyleClass().add("error");
                 Helper.showInformationMessage(getLabel("message.selectEmployee"));
+                getStage(ReportController.class).showAndWait();
 
             } else {
 
@@ -213,7 +214,7 @@ public class ReportController extends Controller {
                 cbEmployees.getStyleClass().remove("error");
                 File fileReport = reportDao.generateMonthly(employee, (int) cbYear.getValue(), ((Pair<Integer, String>) cbMonth.getValue()).getKey());
 
-                Desktop.getDesktop().open(fileReport);
+                openWindowsFile(fileReport);
             }
         } catch (Exception e) {
             Helper.showExceptionMessage(e);
