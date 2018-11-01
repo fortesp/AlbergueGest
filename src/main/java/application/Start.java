@@ -39,6 +39,8 @@ public class Start extends Application {
 
     private final Image windowLogoImage = new Image(getClass().getResourceAsStream("/images/alberguegest_icon.png"));
 
+    protected static final String MANUALFILENAME = "AlbergueGest-Manual.pdf";
+
     @Override
     public void start(Stage mainStage) {
 
@@ -50,8 +52,9 @@ public class Start extends Application {
                 DBImport imp = new DBImport("/db/schema.sql");
                 imp.fire();
 
-                InputStream is = getClass().getResourceAsStream("/AlbergueGest-Manual.pdf");
-                Files.copy(is, Paths.get("AlbergueGest-Manual.pdf"));
+                InputStream is = getClass().getResourceAsStream("/" + MANUALFILENAME);
+                File f = new File(MANUALFILENAME);
+                if(!f.exists()) Files.copy(is, Paths.get(MANUALFILENAME));
             }
             // --------
 
