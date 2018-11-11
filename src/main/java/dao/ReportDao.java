@@ -211,7 +211,7 @@ public class ReportDao extends Dao {
             Report report = em.createQuery("SELECT r FROM Report r WHERE r.date = ?0 AND r.employee = ?1", Report.class)
                     .setParameter(0, date)
                     .setParameter(1, employee)
-                    .getSingleResult();
+                    .setMaxResults(1).getSingleResult();
 
             return report;
 

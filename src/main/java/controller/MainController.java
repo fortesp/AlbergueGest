@@ -300,7 +300,7 @@ public class MainController extends Controller {
             tc_list_group.add(tc6);
 
             // Populate Meals
-            List<Meal> meals = servingDao.getMeals();
+            List<Meal> meals = servingDao.getMeals(false);
 
             populateTableViewMeals(meals, tc_list_group, 0); // Patient
             populateTableViewMeals(meals, tc_list_group, 1); // Companion
