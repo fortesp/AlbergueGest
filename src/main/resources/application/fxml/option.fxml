@@ -23,7 +23,7 @@
       <Insets left="10.0" right="10.0" top="10.0" />
    </padding>
    <children>
-      <TabPane prefWidth="484.0" tabClosingPolicy="UNAVAILABLE" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+      <TabPane fx:id="OptionsTab" prefWidth="484.0" tabClosingPolicy="UNAVAILABLE" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
         <tabs>
           <Tab fx:id="tabEmployees" closable="false" text="%optionStage.responsiblesTab">
             <content>
@@ -57,7 +57,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab closable="false" text="%optionStage.mealsTab">
+          <Tab fx:id="tabMeals" closable="false" text="%optionStage.mealsTab">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

@@ -75,7 +75,7 @@ public class MainController extends Controller {
     @FXML
     private Button btGenerateReport;
     @FXML
-    private MenuItem miOptions;
+    private MenuItem miManageMeals;
     @FXML
     private MenuItem miNewPatient;
     @FXML
@@ -106,6 +106,13 @@ public class MainController extends Controller {
 
             miManageEmployees.setOnAction(event -> {
                 ((OptionController) this.getController(OptionController.class)).reloadData();
+                ((OptionController) this.getController(OptionController.class)).selectTab(true);
+                getStage(OptionController.class).showAndWait();
+            });
+            miManageMeals.setOnAction(event -> {
+                ((OptionController) this.getController(OptionController.class)).reloadData();
+                ((OptionController) this.getController(OptionController.class)).selectTab(false);
+
                 getStage(OptionController.class).showAndWait();
             });
 
@@ -188,10 +195,7 @@ public class MainController extends Controller {
                 ((ReportController) this.getController(ReportController.class)).populateTableView();
                 getStage(ReportController.class).showAndWait();
             });
-            miOptions.setOnAction(event -> {
-                ((OptionController) this.getController(OptionController.class)).reloadData();
-                getStage(OptionController.class).showAndWait();
-            });
+
 
 
             btCheckin.setOnAction(event -> {

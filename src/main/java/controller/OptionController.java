@@ -40,7 +40,8 @@ public class OptionController extends Controller {
     @FXML
     private TableView tblMeals;
     @FXML
-    private Tab tabEmployees;
+    private TabPane OptionsTab;
+
 
     @Override
     @FXML
@@ -253,6 +254,15 @@ public class OptionController extends Controller {
         return tf;
     }
 
+
+    void selectTab(boolean employeesTab) {
+
+        if(employeesTab)
+            OptionsTab.getSelectionModel().select(0);
+        else
+            OptionsTab.getSelectionModel().select(1);
+
+    }
 
     void reloadData() {
 

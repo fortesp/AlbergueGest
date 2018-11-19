@@ -167,6 +167,7 @@ public class PeriodController extends Controller {
         if (txtIdCard.getText().isEmpty() || !Pattern.matches(getLabel("regex.idcard").trim(), txtIdCard.getText().trim().toUpperCase())) {
 
             txtIdCard.getStyleClass().add("error");
+            Helper.showInformationMessage(getLabel("personStage.incorretIdCard"));
             error = true;
 
         } else {
