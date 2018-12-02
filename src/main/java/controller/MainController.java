@@ -176,10 +176,13 @@ public class MainController extends Controller {
 
             btNew.setOnAction(event -> {
                 ((PeriodController) this.getController(PeriodController.class)).resetFieldValues();
+                ((PeriodController) this.getController(PeriodController.class)).setMode(null);
                 getStage(PeriodController.class).showAndWait();
             });
 
             miNewPatient.setOnAction(event -> {
+                ((PeriodController) this.getController(PeriodController.class)).resetFieldValues();
+                ((PeriodController) this.getController(PeriodController.class)).setMode(null);
                 getStage(PeriodController.class).showAndWait();
             });
             miDailyReport.setOnAction(event -> {

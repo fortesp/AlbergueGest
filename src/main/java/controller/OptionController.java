@@ -36,6 +36,10 @@ public class OptionController extends Controller {
     @FXML
     private Button btDelMeal;
     @FXML
+    private Button btCancel1;
+    @FXML
+    private Button btCancel2;
+    @FXML
     private ListView lvListEmployees;
     @FXML
     private TableView tblMeals;
@@ -46,6 +50,14 @@ public class OptionController extends Controller {
     @Override
     @FXML
     void initialize() {
+
+        btCancel1.setOnAction(event -> {
+            closeWindow(btCancel1);
+        });
+
+        btCancel2.setOnAction(event -> {
+            closeWindow(btCancel2);
+        });
 
         btNew.setOnAction(event -> {
 

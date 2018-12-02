@@ -89,6 +89,8 @@ public class PeriodController extends Controller {
                 Patient foundPatient = periodDao.findPatientByIdCard(txtIdCard.getText());
                 if (foundPatient != null) { // Found
 
+                    setMode(Mode.UPDATEFIELDS);
+
                     Period lastPeriod = periodDao.getLastPeriod(foundPatient);
 
                     if (lastPeriod != null && lastPeriod.getCheckout() == null) {
@@ -164,7 +166,7 @@ public class PeriodController extends Controller {
             error = true;
         } else dpDob.getStyleClass().remove("error");
 
-        if (txtIdCard.getText().isEmpty() || !Pattern.matches(getLabel("regex.idcard").trim(), txtIdCard.getText().trim().toUpperCase())) {
+        if (txtIdCard.getText().isEmpty() || (!Pattern.matches(getLabel("regex.idcard").trim(), txtIdCard.getText().trim().toUpperCase()) && false)) { // Pedido para remover validacao regex
 
             txtIdCard.getStyleClass().add("error");
             Helper.showInformationMessage(getLabel("personStage.incorretIdCard"));
@@ -174,10 +176,21 @@ public class PeriodController extends Controller {
 
             foundPatient = periodDao.findPatientByIdCard(txtIdCard.getText());
 
-            if ((foundPatient != null && editPeriod != null) && foundPatient != editPeriod.getPatient()) {
-                Helper.showErrornMessage(getLabel("message.idcardExists") + "\r\n(" + foundPatient + ")");
-                txtIdCard.getStyleClass().add("error");
-                error = true;
+            //if ((foundPatient != null && editPeriod != null) && foundPatient != editPeriod.getPatient()) {
+            if (foundPatient != null) {
+                if ((foundPatient != null && editPeriod != null) && foundPatient != editPeriod.getPatient()) {
+                    Helper.showErrornMessage(getLabel("message.idcardExists") + "\r\n(" + foundPatient + ")");
+                    txtIdCard.getStyleClass().add("error");
+                    error = true;
+                 } else {
+                    if (mode == null) {
+                        Helper.showInformationMessage(getLabel("message.idcardExists"));
+                        btSearch.fire();
+                        error = true;
+                    }
+                }
+
+
             } else txtIdCard.getStyleClass().remove("error");
         }
 
