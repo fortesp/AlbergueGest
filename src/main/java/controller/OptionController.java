@@ -269,10 +269,15 @@ public class OptionController extends Controller {
 
     void selectTab(boolean employeesTab) {
 
-        if(employeesTab)
+        if(employeesTab) {
             OptionsTab.getSelectionModel().select(0);
-        else
+            OptionsTab.getTabs().get(0).setDisable(false);
+            OptionsTab.getTabs().get(1).setDisable(true);
+        } else {
             OptionsTab.getSelectionModel().select(1);
+            OptionsTab.getTabs().get(1).setDisable(false);
+            OptionsTab.getTabs().get(0).setDisable(true);
+        }
 
     }
 

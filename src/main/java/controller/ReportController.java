@@ -201,7 +201,10 @@ public class ReportController extends Controller {
 
                 cbEmployees.getStyleClass().add("error");
                 Helper.showInformationMessage(getLabel("message.selectEmployee"));
-                getStage(ReportController.class).showAndWait();
+
+                try {
+                    getStage(ReportController.class).showAndWait();
+                } catch(IllegalStateException e) {}
 
             } else {
 

@@ -45,16 +45,20 @@
                                  </GridPane.margin></ListView>
                               <GridPane GridPane.rowIndex="2">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="10.0" prefWidth="118.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="230.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
                                     <Button fx:id="btCancel1" alignment="BOTTOM_LEFT" mnemonicParsing="false" text="%cancel" />
-                                    <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="370.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER">
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="249.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER">
                                        <children>
+                                          <Button fx:id="btSave1" defaultButton="true" mnemonicParsing="false" text="%save" visible="false">
+                                             <HBox.margin>
+                                                <Insets left="15.0" />
+                                             </HBox.margin></Button>
                                           <Button fx:id="btDel" mnemonicParsing="false" text="%delete">
                                              <HBox.margin>
                                                 <Insets right="15.0" />
@@ -89,8 +93,8 @@
                                  </columnResizePolicy></TableView>
                               <GridPane GridPane.rowIndex="1">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="10.0" prefWidth="112.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="236.0" minWidth="10.0" prefWidth="236.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -98,6 +102,11 @@
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="370.0" GridPane.columnIndex="1">
                                        <children>
+                                          <Button fx:id="btSave2" defaultButton="true" mnemonicParsing="false" text="%save" visible="false">
+                                             <HBox.margin>
+                                                <Insets left="15.0" />
+                                             </HBox.margin>
+                                          </Button>
                                           <Button fx:id="btDelMeal" mnemonicParsing="false" text="%delete" />
                                           <Button fx:id="btNewMeal" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="%insert">
                                              <HBox.margin>
